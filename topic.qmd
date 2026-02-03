@@ -4,3 +4,10 @@ Pick some subset of the information covered in your annual review article that y
 
 Identify the scope of your user guide - what will you cover? Specific software packages? When to use or not to use a specific technique?
 
+I will explain the balance property when using the Exponential Distribution Family for GLMs in actuarial science. The balance property of GLMs in the exponential family means that the total expected losses equal the total expected pure premiums. The pure premium can be thought of as the portion of the premium that is intended only to cover expected losses, before any adjustments for expenses, risk load, or profit. In this sense, the balance property says that the sum of these unadjusted premiums across all policies matches the expected total losses.
+
+I will introduce the idea using a simple table to show that individual observed losses do not have to necessarily equal their fitted expected losses, but that the fitted expected losses balance correctly when summed across all policies. In actuarial terminology, these fitted expected losses are referred to as pure premiums.
+
+I will then run some of these GLMs in R probably using a few different distributions in the exponential distribution family, and show that this balance property actually holds in practice.
+
+I will also maybe lay out an actual problem involving this in actuarial science and show the balance property holding there, and the implications of what it helps and why it is so important.
