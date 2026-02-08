@@ -11,3 +11,10 @@ I will introduce the idea using a simple table to show that individual observed 
 I will then run some of these GLMs in R probably using a few different distributions in the exponential distribution family, and show that this balance property actually holds in practice.
 
 I will also maybe lay out an actual problem involving this in actuarial science and show the balance property holding there, and the implications of what it helps and why it is so important.
+
+::: callout-note
+# Comments/suggestions
+
+Definitely focus on the actual problem. Make sure that you illustrate lots with your user guide - pictures will help as much if not more than equations. Write for someome familiar enough with actuarial terminology, but I might need you to do "for dummies" footnotes so that I can understand it :). 
+
+:::
