@@ -6,4 +6,13 @@ What parts are likely to be tricky?
 
 What resources are already available on this topic that may be helpful? Look for e.g. software vignettes, package documentation, papers about software packages, and so on.
 
+Someone trying to accomplish this task is likely someone that struggles with how to fit GLMs altogether in R, or possibly people that are unsure of what each part of the balance property actually refers to in terms of the code/data (this was confusing to me at first).
+
+Some things that may be quite tricky are understanding what the balance property actually means. Even when I saw it at a first glance, I misunderstood what it really meant. It is easy to get confused and think that the GLM is somehow perfectly matching the fitted values to the observed ones when rather the sum of all of them are simply equal.
+
+The idea of "pure premiums" may also be tricky because using the word "premium" makes it seem as though this is what the customer pays when in reality, this "pure premium" is adjusted largely for variance, risk, and profit for the company.
+
+As far as just GLMs are concerned, R has a help page about GLMs that is very useful for understanding the process and syntax. Simply type ?glm in the console.
+
+As far as the balance property's usefulness in actuarial science, the article at https://www.annualreviews.org/content/journals/10.1146/annurev-statistics-040120-030244#m0003 covers why the balance property is so useful in insurance.
 
