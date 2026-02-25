@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2026-02-02">
+<meta name="dcterms.date" content="2026-02-25">
 
 <title>Appendix B — Needs Assessment – User Guide: Annual Review Article Topic</title>
 <style>
@@ -178,7 +178,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">February 2, 2026</p>
+      <p class="date">February 25, 2026</p>
     </div>
   </div>
   
@@ -193,6 +193,11 @@ ul.task-list li input[type="checkbox"] {
 <p>What does someone trying to accomplish your chosen task need help with?</p>
 <p>What parts are likely to be tricky?</p>
 <p>What resources are already available on this topic that may be helpful? Look for e.g.&nbsp;software vignettes, package documentation, papers about software packages, and so on.</p>
+<p>Someone trying to accomplish this task is likely someone that struggles with how to fit GLMs altogether in R, or possibly people that are unsure of what each part of the balance property actually refers to in terms of the code/data (this was confusing to me at first).</p>
+<p>Some things that may be quite tricky are understanding what the balance property actually means. Even when I saw it at a first glance, I misunderstood what it really meant. It is easy to get confused and think that the GLM is somehow perfectly matching the fitted values to the observed ones when rather the sum of all of them are simply equal.</p>
+<p>The idea of “pure premiums” may also be tricky because using the word “premium” makes it seem as though this is what the customer pays when in reality, this “pure premium” is adjusted largely for variance, risk, and profit for the company.</p>
+<p>As far as just GLMs are concerned, R has a help page about GLMs that is very useful for understanding the process and syntax. Simply type ?glm in the console.</p>
+<p>As far as the balance property’s usefulness in actuarial science, the article at https://www.annualreviews.org/content/journals/10.1146/annurev-statistics-040120-030244#m0003 covers why the balance property is so useful in insurance.</p>
 
 
 

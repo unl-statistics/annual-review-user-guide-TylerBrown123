@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2026-02-23">
+<meta name="dcterms.date" content="2026-02-25">
 
 <title>Appendix C — Task Analysis – User Guide: Annual Review Article Topic</title>
 <style>
@@ -183,7 +183,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">February 23, 2026</p>
+      <p class="date">February 25, 2026</p>
     </div>
   </div>
   
@@ -205,6 +205,15 @@ ul.task-list li input[type="checkbox"] {
 <h2 data-number="C.1" class="anchored" data-anchor-id="additional-guidance"><span class="header-section-number">C.1</span> Additional Guidance</h2>
 <p>Your check-in should answer these basic questions (and similar concerns that apply more directly to your topic).</p>
 <p>Once you’ve completed the check-in, you can use this section to jump-start an introduction/set-up/getting started section in your user guide. This document should remain as an appendix to your main report.</p>
+<p>There are a few prerequistites in terms of knowledge that a reader of the user guide should be familiar with.</p>
+<p>The first is a base knowledge of the exponential family of GLMs. They need not have the entire realm of canonical link, dispersion parameter and all these such theoretical aspects, but rather just must have a base knowledge of the distributions in the exponential family and that they all follow this rule. Nested in this step, they must also have just the base knowledge of what a GLM is and what it does.</p>
+<p>On a slightly different note, they should have a base knowledge of insurance and what is entails. They need not be an actuary, but rather they just need to have a base knowledge of what losses and premiums are.</p>
+<p>From a software standpoint, the reader only needs to have R and some template for R (such as RStudio). No specific packages are needed as glm() is in the stats package that is embedded into R when it starts.</p>
+<p>Missing values will simply be dropped by glm() if they exist. If the response or predictor variable contain missing values, glm() will simply drop them and only use the others. Therefore missing values should be dealt with before, either with best practice on what should be entered there, or omitting the row entirely beforehand. Also, if your predictor and response are not in the same data frame, and don’t have the same number of values, glm() will give an error.</p>
+<p>The observed data need to be in the range of whatever distribution you are fitting. For example, if you are fitting a poisson GLM, all of your observed values should be non-negative integers. This implies that a normality assumption is not necessary unless you are fitting a normal distribution of course.</p>
+<p>The basic components of the task will be fitting a GLM with each of the main distributions in the exponential family and showing that it holds no matter which one you use. Essentially a short crash course in the use of GLMs in R and this nice property that is useful in insurance. I’ll show from a straight up statistical perspective first then connect the numbers to actual insurance metrics that would make sense given the scenario.</p>
+<p>The user of the user guide should be prepared to decide based on the data which GLM is most appropriate for the data (Note that the balance property will technically hold even under a misspecified GLM but this leads to issues in the real world application, so it should be avoided).</p>
+<p>The user should evaluate this user guide in terms of how well they understand the idea of the balance property in GLMs. Do they understand what each side of the equality actually is in the context of insurance? Do they understand that this holds for every distirbution in the exponential family? Could they apply this to actual insurance data?</p>
 
 
 </section>
