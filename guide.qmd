@@ -1,5 +1,107 @@
-# User Guide
+# Balance Property For GLMs in Actuarial Science
+Readers of this user guide should have a basic understanding of what generalized linear models (GLMs) are used for and how they function. An advanced knowledge of the underlying mathematics is not required, but familiarity with their general application is assumed.
 
-First off, you should change this section title to something more appropriate.
+Readers should also have a general understanding of basic insurance terminology, particularly the terms losses[^1] and claims.[^2] Definitions of these terms are provided in the footnotes.
 
-Next, well, that's up to you. Good luck!
+Lastly, readers should have R installed and some interface for R (such as RStudio) to implement the steps listed.
+
+The balance property for GLMs means that for a model with an intercept, the sum of the observed values used in the model equals the sum of the fitted values from the model.
+
+$\sum y_i = \sum \hat{\mu}_i$
+
+This result is extremely useful in the field of actuarial science, as it ensures that the model's predicted losses/claims for the observed time period sum to what the observed losses/claims were for that time period. For example, assume we observe the number of car insurance claims made by three different age groups across one year. A table showing the observed claims and predicted claims could look as follows:
+
+| Age Group  | Observed | Predicted |
+|--------|----------|-----------|
+| < 20 | 4433 | 4427 |
+| 20-30 | 5687 | 5589 |
+| 31-40 | 8765 | 8699 |
+| 41-50 | 4236 | 4201 |
+| > 50 | 6879 | 7084 |
+| Total | 20000 | 20000 |
+
+As we can see, the estimates for the number of claims from each age group does not necessarily equal the observed number of claims from that age group, but rather the total sum of predicted claims equals the sum of the observed claims. This result is valuable because it guarantees that predicted claims are fairly distributed across each age group without changing the overall total. A model that altered the total when predicting would be less useful because it would be harder to compare predicted estimates to the observed value, as their magnitudes would mean different things relative to their total.
+
+The steps for proving the balance property in GLMs are as follows:
+
+1) Locate or simulate a data set in which the response variable follows a distribution in the exponential family. The glm() function can use the binomial, gaussian (normal), inverse gaussian, gamma, or poisson distributions. Be sure to set a seed for reproducibility if simulating data.
+
+2) Fit a Generalized Linear Model (GLM) to the data using glm() with the chosen distribution.
+
+3) Obtain the fitted (predicted) values of each observation using predict(..., type = "response").
+
+4) Verify the balance property by summing over the fitted values as well as the observed values and seeing that they are equivalent.
+
+We will now show an example of performing this process using some simulated car insurance data.
+
+## Step 1
+According to the 1st step we will simulate a data set that has 2 predictors, Age Group and Vehicle Type. We also simulate the number of observed claims for each person.
+
+```{r}
+# Set seed for reproducibility
+set.seed(999)
+
+# Number of people
+n <- 1000
+
+# Predictors
+AgeGroup <- sample(c("<20", "20-30", "31-40", "41-50", ">50"), n, replace = TRUE)
+VehicleType <- sample(c("Sedan", "SUV"), n, replace = TRUE)
+
+# Simulate observed claims (Poisson)
+lambda <- 1 + 
+  ifelse(AgeGroup == "<20", 1, 0) + 
+  ifelse(AgeGroup == "20-30", 0.5, 0) +
+  ifelse(VehicleType == "SUV", 0.5, 0)
+
+claims <- rpois(n, lambda)
+
+# Put data together
+car_data <- data.frame(claims, AgeGroup, VehicleType)
+```
+
+We could have set lambda to simply be a constant number for every person. This is however quite unrealistic as the predictors should have some influence on the average number of claims per person. As such, we add ifelse statements to increase the mean based on certain values of predictors. The baseline mean is 1, but if the age group is "<20" then we add 1 to the mean. If the age group is "20-30" then we add 0.5 to the mean. If the Vehicle Type is "SUV" then we add 0.5 to the mean. This simply attempts to add some realism to the data.
+
+After we are done with this, we put all the data into a data frame that we call car_data. Below is what your data should be formatted like:
+
+```{r}
+head(car_data)
+```
+
+## Step 2
+
+Now, according to the 2nd step, we will fit the Generalized Linear Model (GLM) to the data using the glm() function. We use a Poisson GLM as the poisson distribution deals with counts well, which makes sense for our "number of claims" data. See @PoissonRegressionWay for more on why.
+```{r}
+# Fit Poisson GLM with 2 predictors
+fit <- glm(claims ~ AgeGroup + VehicleType, family = poisson, data = car_data)
+```
+
+## Step 3
+
+Now, according to the 3rd step, we just need to use predict(..., type = "response") to get the fitted (predicted) values. The "response" part is important here because it ensures our data go back to the regular data scale and not the model scale in log terms that the Poisson GLM uses. For more on this, also see @PoissonRegressionWay.
+```{r}
+# Get fitted values
+car_data$Fitted <- predict(fit, type = "response")
+```
+
+## Step 4
+
+Now, for our 4th and final step, we will verify the balance property by summing over the fitted (predicted) claims as well as the observed claims.
+```{r}
+# Check Balance Property
+total_observed <- sum(car_data$claims)
+total_fitted <- sum(car_data$Fitted)
+
+cat("Total observed claims:", total_observed)
+cat("Total fitted (predicted) claims:", total_fitted)
+```
+
+As we can see, the total observed claims match the total fitted (predicted) claims. This proves the balance property!
+
+[^1]: losses - the money an insurance company must pay because of an accident or damage.
+
+[^2]: claims - reported occurrences of a loss for which payment is requested from the insurer.
+
+
+
+

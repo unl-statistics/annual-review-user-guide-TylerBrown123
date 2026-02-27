@@ -15,7 +15,6 @@ Once you're finished with that, ideally, you'll have plenty of time to edit and 
 Feel free to trade reports with a friend and try to complete your friend's task - this will help you both identify areas where the guide isn't as clear. 
 Try to complete the task with a different data set - that often helps find trouble spots.
 
-
 When you submit your final report, you may remove `index.qmd` from the `_quarto.yml` file, which will remove this chapter (which is quite unnecessary for your user) from the report. 
 You should also take the time to make sure your name is listed as both author and copyright holder in the `_quarto.yml` file. 
 Feel free to make a custom cover for your manual if you would like to do so. 
@@ -27,4 +26,6 @@ You can also tweak the CSS/theme for the book, so long as you're conscious of ac
 If you are using RStudio to complete this report, you can hit (Ctrl/Cmd)-Shift-B to build the whole report. You can also type `quarto render .` on the command line in the project folder to accomplish the same thing.
 
 If you have questions about how to customize or debug your book, it may be helpful to start at the quarto book documentation [@positpbcCreatingBook2024]. 
+
+
 :::
