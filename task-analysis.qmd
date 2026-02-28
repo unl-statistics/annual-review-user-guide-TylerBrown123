@@ -37,6 +37,12 @@ From a software standpoint, the reader only needs to have R and some template fo
 
 Missing values will simply be dropped by glm() if they exist. If the response or predictor variable contain missing values, glm() will simply drop them and only use the others. Therefore missing values should be dealt with before, either with best practice on what should be entered there, or omitting the row entirely beforehand. Also, if your predictor and response are not in the same data frame, and don't have the same number of values, glm() will give an error.
 
+::: callout-note
+
+What other approaches to missing values can you find for GLMs and where would they be useful (or not) in this application? I'm thinking e.g. sampling/bootstrap approaches primarily that are taken to deal with missing values that can increase the variance to account for the missingness instead of just dropping all of the data.
+
+:::
+
 The observed data need to be in the range of whatever distribution you are fitting. For example, if you are fitting a poisson GLM, all of your observed values should be non-negative integers. This implies that a normality assumption is not necessary unless you are fitting a normal distribution of course.
 
 The basic components of the task will be fitting a GLM with each of the main distributions in the exponential family and showing that it holds no matter which one you use. Essentially a short crash course in the use of GLMs in R and this nice property that is useful in insurance. I'll show from a straight up statistical perspective first then connect the numbers to actual insurance metrics that would make sense given the scenario.

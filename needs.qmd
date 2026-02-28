@@ -16,3 +16,8 @@ As far as just GLMs are concerned, R has a help page about GLMs that is very use
 
 As far as the balance property's usefulness in actuarial science, the article at https://www.annualreviews.org/content/journals/10.1146/annurev-statistics-040120-030244#m0003 covers why the balance property is so useful in insurance.
 
+::: callout-note
+
+You might also want to link to a resource from e.g. the big book of R (google it) that serves as a more general tutorial on GLMs, and any other actuarial resources you find in there which might have alternative explanations of the balance property. It can help to provide many different helpful options along with a short description of why they are helpful when you have a broad set of things that users might not understand.
+
+:::
