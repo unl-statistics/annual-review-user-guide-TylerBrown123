@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2026-02-25">
+<meta name="dcterms.date" content="2026-03-01">
 
-<title>Appendix C — Task Analysis – User Guide: Annual Review Article Topic</title>
+<title>Appendix C — Task Analysis – Balance Property For GLMs in Actuarial Science</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -96,7 +96,7 @@ ul.task-list li input[type="checkbox"] {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">User Guide: Annual Review Article Topic</a> 
+      <a href="./">Balance Property For GLMs in Actuarial Science</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -115,7 +115,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./guide.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">User Guide</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Balance Property For GLMs in Actuarial Science</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -183,7 +183,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">February 25, 2026</p>
+      <p class="date">March 1, 2026</p>
     </div>
   </div>
   
@@ -210,6 +210,19 @@ ul.task-list li input[type="checkbox"] {
 <p>On a slightly different note, they should have a base knowledge of insurance and what is entails. They need not be an actuary, but rather they just need to have a base knowledge of what losses and premiums are.</p>
 <p>From a software standpoint, the reader only needs to have R and some template for R (such as RStudio). No specific packages are needed as glm() is in the stats package that is embedded into R when it starts.</p>
 <p>Missing values will simply be dropped by glm() if they exist. If the response or predictor variable contain missing values, glm() will simply drop them and only use the others. Therefore missing values should be dealt with before, either with best practice on what should be entered there, or omitting the row entirely beforehand. Also, if your predictor and response are not in the same data frame, and don’t have the same number of values, glm() will give an error.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>What other approaches to missing values can you find for GLMs and where would they be useful (or not) in this application? I’m thinking e.g.&nbsp;sampling/bootstrap approaches primarily that are taken to deal with missing values that can increase the variance to account for the missingness instead of just dropping all of the data.</p>
+</div>
+</div>
 <p>The observed data need to be in the range of whatever distribution you are fitting. For example, if you are fitting a poisson GLM, all of your observed values should be non-negative integers. This implies that a normality assumption is not necessary unless you are fitting a normal distribution of course.</p>
 <p>The basic components of the task will be fitting a GLM with each of the main distributions in the exponential family and showing that it holds no matter which one you use. Essentially a short crash course in the use of GLMs in R and this nice property that is useful in insurance. I’ll show from a straight up statistical perspective first then connect the numbers to actual insurance metrics that would make sense given the scenario.</p>
 <p>The user of the user guide should be prepared to decide based on the data which GLM is most appropriate for the data (Note that the balance property will technically hold even under a misspecified GLM but this leads to issues in the real world application, so it should be avoided).</p>

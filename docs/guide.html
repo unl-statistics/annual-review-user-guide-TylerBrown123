@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2026-02-27">
+<meta name="dcterms.date" content="2026-03-01">
 
-<title>1&nbsp; Balance Property For GLMs in Actuarial Science – User Guide: Annual Review Article Topic</title>
+<title>1&nbsp; Balance Property For GLMs in Actuarial Science – Balance Property For GLMs in Actuarial Science</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -180,7 +180,7 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">User Guide: Annual Review Article Topic</a> 
+      <a href="./">Balance Property For GLMs in Actuarial Science</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -247,10 +247,10 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#step-1" id="toc-step-1" class="nav-link active" data-scroll-target="#step-1"><span class="header-section-number">1.1</span> Step 1</a></li>
-  <li><a href="#step-2" id="toc-step-2" class="nav-link" data-scroll-target="#step-2"><span class="header-section-number">1.2</span> Step 2</a></li>
-  <li><a href="#step-3" id="toc-step-3" class="nav-link" data-scroll-target="#step-3"><span class="header-section-number">1.3</span> Step 3</a></li>
-  <li><a href="#step-4" id="toc-step-4" class="nav-link" data-scroll-target="#step-4"><span class="header-section-number">1.4</span> Step 4</a></li>
+  <li><a href="#locatingsimulating-a-data-set" id="toc-locatingsimulating-a-data-set" class="nav-link active" data-scroll-target="#locatingsimulating-a-data-set"><span class="header-section-number">1.1</span> Locating/Simulating a Data Set</a></li>
+  <li><a href="#fitting-the-generalized-linear-model-glm" id="toc-fitting-the-generalized-linear-model-glm" class="nav-link" data-scroll-target="#fitting-the-generalized-linear-model-glm"><span class="header-section-number">1.2</span> Fitting the Generalized Linear Model (GLM)</a></li>
+  <li><a href="#obtaining-the-fitted-predicted-values" id="toc-obtaining-the-fitted-predicted-values" class="nav-link" data-scroll-target="#obtaining-the-fitted-predicted-values"><span class="header-section-number">1.3</span> Obtaining the Fitted (Predicted) Values</a></li>
+  <li><a href="#verify-the-balance-property" id="toc-verify-the-balance-property" class="nav-link" data-scroll-target="#verify-the-balance-property"><span class="header-section-number">1.4</span> Verify the Balance Property</a></li>
   </ul>
 </nav>
     </div>
@@ -270,7 +270,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">February 27, 2026</p>
+      <p class="date">March 1, 2026</p>
     </div>
   </div>
   
@@ -284,6 +284,7 @@ window.Quarto = {
 
 <p>Readers of this user guide should have a basic understanding of what generalized linear models (GLMs) are used for and how they function. An advanced knowledge of the underlying mathematics is not required, but familiarity with their general application is assumed.</p>
 <p>Readers should also have a general understanding of basic insurance terminology, particularly the terms losses<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> and claims.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> Definitions of these terms are provided in the footnotes.</p>
+<p>Lastly, readers should have R installed and some interface for R (such as RStudio) to implement the steps listed.</p>
 <p>The balance property for GLMs means that for a model with an intercept, the sum of the observed values used in the model equals the sum of the fitted values from the model.</p>
 <p><span class="math inline">\(\sum y_i = \sum \hat{\mu}_i\)</span></p>
 <p>This result is extremely useful in the field of actuarial science, as it ensures that the model’s predicted losses/claims for the observed time period sum to what the observed losses/claims were for that time period. For example, assume we observe the number of car insurance claims made by three different age groups across one year. A table showing the observed claims and predicted claims could look as follows:</p>
@@ -337,8 +338,8 @@ window.Quarto = {
 <li><p>Verify the balance property by summing over the fitted values as well as the observed values and seeing that they are equivalent.</p></li>
 </ol>
 <p>We will now show an example of performing this process using some simulated car insurance data.</p>
-<section id="step-1" class="level2" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="step-1"><span class="header-section-number">1.1</span> Step 1</h2>
+<section id="locatingsimulating-a-data-set" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="locatingsimulating-a-data-set"><span class="header-section-number">1.1</span> Locating/Simulating a Data Set</h2>
 <p>According to the 1st step we will simulate a data set that has 2 predictors, Age Group and Vehicle Type. We also simulate the number of observed claims for each person.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set seed for reproducibility</span></span>
@@ -377,24 +378,24 @@ window.Quarto = {
 </div>
 </div>
 </section>
-<section id="step-2" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="step-2"><span class="header-section-number">1.2</span> Step 2</h2>
+<section id="fitting-the-generalized-linear-model-glm" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="fitting-the-generalized-linear-model-glm"><span class="header-section-number">1.2</span> Fitting the Generalized Linear Model (GLM)</h2>
 <p>Now, according to the 2nd step, we will fit the Generalized Linear Model (GLM) to the data using the glm() function. We use a Poisson GLM as the poisson distribution deals with counts well, which makes sense for our “number of claims” data. See <span class="citation" data-cites="PoissonRegressionWay">Chugani (<a href="references.html#ref-PoissonRegressionWay" role="doc-biblioref">n.d.</a>)</span> for more on why.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit Poisson GLM with 2 predictors</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">glm</span>(claims <span class="sc">~</span> AgeGroup <span class="sc">+</span> VehicleType, <span class="at">family =</span> poisson, <span class="at">data =</span> car_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="step-3" class="level2" data-number="1.3">
-<h2 data-number="1.3" class="anchored" data-anchor-id="step-3"><span class="header-section-number">1.3</span> Step 3</h2>
+<section id="obtaining-the-fitted-predicted-values" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="obtaining-the-fitted-predicted-values"><span class="header-section-number">1.3</span> Obtaining the Fitted (Predicted) Values</h2>
 <p>Now, according to the 3rd step, we just need to use predict(…, type = “response”) to get the fitted (predicted) values. The “response” part is important here because it ensures our data go back to the regular data scale and not the model scale in log terms that the Poisson GLM uses. For more on this, also see <span class="citation" data-cites="PoissonRegressionWay">Chugani (<a href="references.html#ref-PoissonRegressionWay" role="doc-biblioref">n.d.</a>)</span>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get fitted values</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>car_data<span class="sc">$</span>Fitted <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, <span class="at">type =</span> <span class="st">"response"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="step-4" class="level2" data-number="1.4">
-<h2 data-number="1.4" class="anchored" data-anchor-id="step-4"><span class="header-section-number">1.4</span> Step 4</h2>
+<section id="verify-the-balance-property" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="verify-the-balance-property"><span class="header-section-number">1.4</span> Verify the Balance Property</h2>
 <p>Now, for our 4th and final step, we will verify the balance property by summing over the fitted (predicted) claims as well as the observed claims.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check Balance Property</span></span>
@@ -864,7 +865,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>Copyright 2025, Author Name</p>
+<p>Copyright 2026, Tyler Brown</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

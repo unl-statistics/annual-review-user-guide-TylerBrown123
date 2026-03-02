@@ -34,7 +34,7 @@ The steps for proving the balance property in GLMs are as follows:
 
 We will now show an example of performing this process using some simulated car insurance data.
 
-## Step 1
+## Locating/Simulating a Data Set
 According to the 1st step we will simulate a data set that has 2 predictors, Age Group and Vehicle Type. We also simulate the number of observed claims for each person.
 
 ```{r}
@@ -68,7 +68,7 @@ After we are done with this, we put all the data into a data frame that we call 
 head(car_data)
 ```
 
-## Step 2
+## Fitting the Generalized Linear Model (GLM)
 
 Now, according to the 2nd step, we will fit the Generalized Linear Model (GLM) to the data using the glm() function. We use a Poisson GLM as the poisson distribution deals with counts well, which makes sense for our "number of claims" data. See @PoissonRegressionWay for more on why.
 ```{r}
@@ -76,7 +76,7 @@ Now, according to the 2nd step, we will fit the Generalized Linear Model (GLM) t
 fit <- glm(claims ~ AgeGroup + VehicleType, family = poisson, data = car_data)
 ```
 
-## Step 3
+## Obtaining the Fitted (Predicted) Values
 
 Now, according to the 3rd step, we just need to use predict(..., type = "response") to get the fitted (predicted) values. The "response" part is important here because it ensures our data go back to the regular data scale and not the model scale in log terms that the Poisson GLM uses. For more on this, also see @PoissonRegressionWay.
 ```{r}
@@ -84,7 +84,7 @@ Now, according to the 3rd step, we just need to use predict(..., type = "respons
 car_data$Fitted <- predict(fit, type = "response")
 ```
 
-## Step 4
+## Verify the Balance Property
 
 Now, for our 4th and final step, we will verify the balance property by summing over the fitted (predicted) claims as well as the observed claims.
 ```{r}
