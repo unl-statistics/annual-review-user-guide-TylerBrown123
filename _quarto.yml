@@ -14,7 +14,6 @@ book:
     left: "Copyright 2026, Tyler Brown"
   chapters:
     - index.qmd # Remove this before you submit your final report!
-    - guide.qmd
     - references.qmd
   appendices:
     - topic.qmd
