@@ -1,0 +1,116 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Balance Property For GLMs in Actuarial Science",
+    "section": "",
+    "text": "1 Balance Property For Generalized Linear Models (GLMs) in Actuarial Science",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Balance Property For Generalized Linear Models (GLMs) in Actuarial Science</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#locatingsimulating-a-data-set",
+    "href": "index.html#locatingsimulating-a-data-set",
+    "title": "Balance Property For GLMs in Actuarial Science",
+    "section": "1.1 Locating/Simulating a Data Set",
+    "text": "1.1 Locating/Simulating a Data Set\nAccording to the 1st step we will simulate a data set that has 2 predictors, Age Group and Vehicle Type. We also simulate the number of observed claims for each person.\n\n# Set seed for reproducibility\nset.seed(999)\n\n# Number of people\nn &lt;- 1000\n\n# Predictors\nAgeGroup &lt;- sample(c(\"&lt;20\", \"20-30\", \"31-40\", \"41-50\", \"&gt;50\"), \n                   n, replace = TRUE)\nVehicleType &lt;- sample(c(\"Sedan\", \"SUV\"), n, replace = TRUE)\n\n# Simulate observed claims (Poisson)\nlambda &lt;- 1 + \n  ifelse(AgeGroup == \"&lt;20\", 1, 0) + \n  ifelse(AgeGroup == \"20-30\", 0.5, 0) +\n  ifelse(VehicleType == \"SUV\", 0.5, 0)\n\nclaims &lt;- rpois(n, lambda)\n\n# Put data together\ncar_data &lt;- data.frame(claims, AgeGroup, VehicleType)\n\nWe could have set lambda (the mean) of the poisson distribution to simply be a constant number for every person. This is however quite unrealistic as the predictors should have some influence on the average number of claims per person. As such, we add ifelse statements to increase the mean based on certain values of predictors. The baseline mean is 1, but if the age group is “&lt;20” then we add 1 to the mean. If the age group is “20-30” then we add 0.5 to the mean. If the Vehicle Type is “SUV” then we add 0.5 to the mean. This simply attempts to add some realism to the data.\nAfter we are done with this, we put all the data into a data frame that we call car_data. Below is what your data should be formatted like:\n\nhead(car_data)\n\n  claims AgeGroup VehicleType\n1      0    31-40       Sedan\n2      3    41-50         SUV\n3      3      &gt;50         SUV\n4      2      &lt;20         SUV\n5      1      &lt;20       Sedan\n6      4    20-30       Sedan\n\n\nWe can also construct a histogram of the data to visually assess whether it follows the general shape of the distribution we selected. In this case, we are looking for evidence that the data are approximately Poisson distributed.\n\nggplot() +\n  geom_histogram(aes(x = claims), fill = \"lightblue\", bins = 30) +\n  labs(title = \"Distribution of Claims\",\n       x = \"Number of Claims\",\n       y = \"Frequency\") +\n  theme_minimal()\n\n\n\n\n\n\n\n\nFrom the histogram, we see a right-skewed distribution with a lot of the mass concentrated at lower count values, which is consistent with the general shape of a Poisson distribution. As such, a poisson GLM seems reasonable as a modeling choice for these data.\nOn the other hand, here is an example of data for which a Poisson model would fit poorly.\n\nset.seed(999)\nclaims_bad &lt;- runif(n, 0, 8)\nggplot() +\n  geom_histogram(aes(x = claims_bad), fill = \"lightblue\", bins = 50) +\n  labs(title = \"Distribution of Claims\",\n       x = \"Number of Claims\",\n       y = \"Frequency\") +\n  theme_minimal()\n\n\n\n\n\n\n\n\nIn this histogram, we do not observe the right-skewed shape typically associated with a Poisson distribution. Instead, the observations appear approximately uniformly distributed across the range, with only minor random peaks. Seeing this lack of general Poisson structure, a Poisson GLM would likely be a bad fit in this case.\n\n\n\n\n\n\nImportant Note\n\n\n\nThe balance property will hold by definition regardless of whether the model provides a good fit. However, relying on this property when the model is clearly misspecified is bad practice, as the resulting model would have little practical value for inference or prediction.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Balance Property For Generalized Linear Models (GLMs) in Actuarial Science</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#fitting-the-generalized-linear-model-glm",
+    "href": "index.html#fitting-the-generalized-linear-model-glm",
+    "title": "Balance Property For GLMs in Actuarial Science",
+    "section": "1.2 Fitting the Generalized Linear Model (GLM)",
+    "text": "1.2 Fitting the Generalized Linear Model (GLM)\nNext, according to the 2nd step, we will fit the Generalized Linear Model (GLM) to the data using the glm() function. We use a Poisson GLM as the poisson distribution deals with counts well, which makes sense for our “number of claims” data. See Chugani (n.d.) for more on why.\n\n# Fit Poisson GLM with 2 predictors\nfit &lt;- glm(claims ~ AgeGroup + VehicleType, family = poisson, data = car_data)",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Balance Property For Generalized Linear Models (GLMs) in Actuarial Science</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#obtaining-the-fitted-predicted-values",
+    "href": "index.html#obtaining-the-fitted-predicted-values",
+    "title": "Balance Property For GLMs in Actuarial Science",
+    "section": "1.3 Obtaining the Fitted (Predicted) Values",
+    "text": "1.3 Obtaining the Fitted (Predicted) Values\nNext, according to the 3rd step, we just need to use predict(…, type = “response”) to get the fitted (predicted) values. The “response” part is important here because it ensures our data go back to the regular data scale and not the model scale in log terms that the Poisson GLM uses. For more on this, also see Chugani (n.d.).\n\n# Get fitted values\ncar_data$Fitted &lt;- predict(fit, type = \"response\")",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Balance Property For Generalized Linear Models (GLMs) in Actuarial Science</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#verifying-the-balance-property",
+    "href": "index.html#verifying-the-balance-property",
+    "title": "Balance Property For GLMs in Actuarial Science",
+    "section": "1.4 Verifying the Balance Property",
+    "text": "1.4 Verifying the Balance Property\nLastly, for our 4th and final step, we will verify the balance property by summing over the fitted (predicted) claims as well as the observed claims.\n\n# Check Balance Property\ntotal_observed &lt;- sum(car_data$claims)\ntotal_fitted &lt;- sum(car_data$Fitted)\n\ncat(\"Total observed claims:\", total_observed)\n\nTotal observed claims: 1546\n\ncat(\"Total fitted (predicted) claims:\", total_fitted)\n\nTotal fitted (predicted) claims: 1546\n\n\nAs we can see, the total observed claims match the total fitted (predicted) claims. This proves the balance property!\n\n\n\n\nChugani, Vinod. n.d. “Poisson Regression: A Way to Model Count Data  DataCamp.” Accessed February 27, 2026. https://www.datacamp.com/tutorial/poisson-regression.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Balance Property For Generalized Linear Models (GLMs) in Actuarial Science</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#footnotes",
+    "href": "index.html#footnotes",
+    "title": "Balance Property For GLMs in Actuarial Science",
+    "section": "",
+    "text": "losses - the money an insurance company must pay because of an accident or damage.↩︎\nclaims - reported occurrences of a loss for which payment is requested from the insurer.↩︎",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Balance Property For Generalized Linear Models (GLMs) in Actuarial Science</span>"
+    ]
+  },
+  {
+    "objectID": "references.html",
+    "href": "references.html",
+    "title": "References",
+    "section": "",
+    "text": "Chugani, Vinod. n.d. “Poisson Regression: A Way to Model Count\nData  DataCamp.” Accessed February 27,\n2026. https://www.datacamp.com/tutorial/poisson-regression.",
+    "crumbs": [
+      "References"
+    ]
+  },
+  {
+    "objectID": "topic.html",
+    "href": "topic.html",
+    "title": "Appendix A — Topic",
+    "section": "",
+    "text": "Pick some subset of the information covered in your annual review article that you are interested in exploring in more detail.\nIdentify the scope of your user guide - what will you cover? Specific software packages? When to use or not to use a specific technique?\nI will explain the balance property when using the Exponential Distribution Family for GLMs in actuarial science. The balance property of GLMs in the exponential family means that the total expected losses equal the total expected pure premiums. The pure premium can be thought of as the portion of the premium that is intended only to cover expected losses, before any adjustments for expenses, risk load, or profit. In this sense, the balance property says that the sum of these unadjusted premiums across all policies matches the expected total losses.\nI will introduce the idea using a simple table to show that individual observed losses do not have to necessarily equal their fitted expected losses, but that the fitted expected losses balance correctly when summed across all policies. In actuarial terminology, these fitted expected losses are referred to as pure premiums.\nI will then run some of these GLMs in R probably using a few different distributions in the exponential distribution family, and show that this balance property actually holds in practice.\nI will also maybe lay out an actual problem involving this in actuarial science and show the balance property holding there, and the implications of what it helps and why it is so important.\n\n\n\n\n\n\nComments/suggestions\n\n\n\nDefinitely focus on the actual problem. Make sure that you illustrate lots with your user guide - pictures will help as much if not more than equations. Write for someome familiar enough with actuarial terminology, but I might need you to do “for dummies” footnotes so that I can understand it :).",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>A</span>  <span class='chapter-title'>Topic</span>"
+    ]
+  },
+  {
+    "objectID": "needs.html",
+    "href": "needs.html",
+    "title": "Appendix B — Needs Assessment",
+    "section": "",
+    "text": "What does someone trying to accomplish your chosen task need help with?\nWhat parts are likely to be tricky?\nWhat resources are already available on this topic that may be helpful? Look for e.g. software vignettes, package documentation, papers about software packages, and so on.\nSomeone trying to accomplish this task is likely someone that struggles with how to fit GLMs altogether in R, or possibly people that are unsure of what each part of the balance property actually refers to in terms of the code/data (this was confusing to me at first).\nSome things that may be quite tricky are understanding what the balance property actually means. Even when I saw it at a first glance, I misunderstood what it really meant. It is easy to get confused and think that the GLM is somehow perfectly matching the fitted values to the observed ones when rather the sum of all of them are simply equal.\nThe idea of “pure premiums” may also be tricky because using the word “premium” makes it seem as though this is what the customer pays when in reality, this “pure premium” is adjusted largely for variance, risk, and profit for the company.\nAs far as just GLMs are concerned, R has a help page about GLMs that is very useful for understanding the process and syntax. Simply type ?glm in the console.\nAs far as the balance property’s usefulness in actuarial science, the article at https://www.annualreviews.org/content/journals/10.1146/annurev-statistics-040120-030244#m0003 covers why the balance property is so useful in insurance.\n\n\n\n\n\n\nNote\n\n\n\nYou might also want to link to a resource from e.g. the big book of R (google it) that serves as a more general tutorial on GLMs, and any other actuarial resources you find in there which might have alternative explanations of the balance property. It can help to provide many different helpful options along with a short description of why they are helpful when you have a broad set of things that users might not understand.",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>B</span>  <span class='chapter-title'>Needs Assessment</span>"
+    ]
+  },
+  {
+    "objectID": "task-analysis.html",
+    "href": "task-analysis.html",
+    "title": "Appendix C — Task Analysis",
+    "section": "",
+    "text": "C.1 Additional Guidance\nHere are some questions to guide you through the process of doing a task analysis. You don’t have to specifically answer each one of these (and some may not apply), but they should get you started thinking in the right direction.\nWhat are the prerequisites, for both knowledge and e.g. software setup?\nWhat are the basic requirements for any data that the method is used on? - Are missing values allowed? - Should the data be confined within a certain range? - Does the data have to be approximately normally distributed?\nWhat are the basic components of the task? - Outline these in a bit more detail\nWhat decisions does the user need to be prepared to make on the fly?\nWhat questions should the user ask of the “first draft” of the product? What adjustments may need to be made?\nYour check-in should answer these basic questions (and similar concerns that apply more directly to your topic).\nOnce you’ve completed the check-in, you can use this section to jump-start an introduction/set-up/getting started section in your user guide. This document should remain as an appendix to your main report.\nThere are a few prerequistites in terms of knowledge that a reader of the user guide should be familiar with.\nThe first is a base knowledge of the exponential family of GLMs. They need not have the entire realm of canonical link, dispersion parameter and all these such theoretical aspects, but rather just must have a base knowledge of the distributions in the exponential family and that they all follow this rule. Nested in this step, they must also have just the base knowledge of what a GLM is and what it does.\nOn a slightly different note, they should have a base knowledge of insurance and what is entails. They need not be an actuary, but rather they just need to have a base knowledge of what losses and premiums are.\nFrom a software standpoint, the reader only needs to have R and some template for R (such as RStudio). No specific packages are needed as glm() is in the stats package that is embedded into R when it starts.\nMissing values will simply be dropped by glm() if they exist. If the response or predictor variable contain missing values, glm() will simply drop them and only use the others. Therefore missing values should be dealt with before, either with best practice on what should be entered there, or omitting the row entirely beforehand. Also, if your predictor and response are not in the same data frame, and don’t have the same number of values, glm() will give an error.\nThe observed data need to be in the range of whatever distribution you are fitting. For example, if you are fitting a poisson GLM, all of your observed values should be non-negative integers. This implies that a normality assumption is not necessary unless you are fitting a normal distribution of course.\nThe basic components of the task will be fitting a GLM with each of the main distributions in the exponential family and showing that it holds no matter which one you use. Essentially a short crash course in the use of GLMs in R and this nice property that is useful in insurance. I’ll show from a straight up statistical perspective first then connect the numbers to actual insurance metrics that would make sense given the scenario.\nThe user of the user guide should be prepared to decide based on the data which GLM is most appropriate for the data (Note that the balance property will technically hold even under a misspecified GLM but this leads to issues in the real world application, so it should be avoided).\nThe user should evaluate this user guide in terms of how well they understand the idea of the balance property in GLMs. Do they understand what each side of the equality actually is in the context of insurance? Do they understand that this holds for every distirbution in the exponential family? Could they apply this to actual insurance data?",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>C</span>  <span class='chapter-title'>Task Analysis</span>"
+    ]
+  },
+  {
+    "objectID": "task-analysis.html#additional-guidance",
+    "href": "task-analysis.html#additional-guidance",
+    "title": "Appendix C — Task Analysis",
+    "section": "",
+    "text": "Note\n\n\n\nWhat other approaches to missing values can you find for GLMs and where would they be useful (or not) in this application? I’m thinking e.g. sampling/bootstrap approaches primarily that are taken to deal with missing values that can increase the variance to account for the missingness instead of just dropping all of the data.",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>C</span>  <span class='chapter-title'>Task Analysis</span>"
+    ]
+  }
+]
