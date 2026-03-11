@@ -1,0 +1,7 @@
+# Tyler Brown
+
+- Your sections should probably be things like "Introduction", etc. -- not just "Balance Property..."
+
+- Using # and then ### will leave you with a section numbered X.0.Y because there's no ##
+
+- You must go back and fill in dates when Zotero Connector doesn't pull them out correctly -- using Zotero and bibtex doesn't absolve you of the need to check that everything is entered properly.
